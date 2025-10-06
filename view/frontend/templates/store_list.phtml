@@ -1,0 +1,67 @@
+<?php
+/**
+ * Mavenbird Technologies Private Limited
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://mavenbird.com/Mavenbird-Module-License.txt
+ *
+ * =================================================================
+ *
+ * @category   Mavenbird
+ * @package    Mavenbird_HtmlSiteMap
+ * @author     Mavenbird Team
+ * @copyright  Copyright (c) 2018-2024 Mavenbird Technologies Private Limited ( http://mavenbird.com )
+ * @license    http://mavenbird.com/Mavenbird-Module-License.txt
+ */
+?>
+<?php
+/**
+ * SEO Toolbar template
+ *
+ * @var $block Mavenbird\HtmlSiteMap\Block\ItemsCollection
+ */
+?>
+<?php
+$helper = $block->getHelper();
+
+//Store View Link
+$additionUrl = $helper->getAdditionUrl();
+$baseUrl = $helper->getBaseUrl();
+$enableStoreView = $helper->isEnableStoreView();
+$titleStore = $helper->titleStore();
+?>
+<?php
+if ($enableStoreView) : ?>
+    <h2 class="mavenbird_h2"><?php echo $titleStore; ?></h2>
+    <div class="mavenbird_site_map_grid">
+    <?php
+    foreach ($block->getGroups() as $group) : ?>
+        <div class="mavenbird_h3">
+            <a href="<?php echo $baseUrl; ?>"
+               data-post='<?php echo $block->getTargetStorePostData($group->getDefaultStore()); ?>'>
+                <?php echo $block->escapeHtml($group->getName()) ?>
+            </a>
+        </div>
+        <br/>
+        <?php foreach ($group->getStores() as $lang): ?>
+            <?php if (!$lang->isActive()): ?>
+                <?php continue; ?>
+            <?php endif; ?>
+            <div class="col-mavenbird-3">
+                <h3 class="mavenbird_product_list view-<?= $block->escapeHtml($lang->getCode()) ?>">
+                    <a href="<?= $block->escapeUrl($block->getTargetStoreRedirectUrl($lang)) ?>">
+                        <?= $block->escapeHtml($lang->getName()) ?>
+                    </a>
+                </h3>
+            </div>
+        <?php endforeach; ?>
+
+        <?php
+    endforeach; ?>
+    </div>
+    <?php
+endif; ?>
